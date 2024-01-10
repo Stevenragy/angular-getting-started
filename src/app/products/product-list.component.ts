@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'pm-products',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, CommonModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
 })
@@ -11,7 +13,9 @@ export class ProductListComponent {
   pageTitle = 'Product List';
   imageWidth = 50;
   imageMargin = 2;
-  products: any[] = [
+  showImage = false;
+  listFilter = 'cart';
+  products = [
     {
       productId: 2,
       productName: 'Garden Cart',
@@ -33,4 +37,8 @@ export class ProductListComponent {
       imageUrl: 'assets/images/hammer.png',
     },
   ];
+
+  toggleImagee(): void {
+    this.showImage = !this.showImage;
+  }
 }
