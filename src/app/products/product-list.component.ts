@@ -3,16 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IProduct } from './product';
 import { ConvertToSpacesPipe } from '../shared/convert-to-spaces.pipe';
+import { StarComponent } from '../shared/star-component/star.component';
 
 @Component({
   selector: 'pm-products',
   standalone: true,
-  imports: [FormsModule, CommonModule, ConvertToSpacesPipe],
+  imports: [FormsModule, CommonModule, ConvertToSpacesPipe, StarComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
 })
 export class ProductListComponent implements OnInit {
-  pageTitle = 'Product List';
+  pageTitle = 'Product list';
   imageWidth = 50;
   imageMargin = 2;
   showImage = false;
@@ -65,5 +66,8 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.listFilter = 'cart';
+  }
+  onRatingClicked(value: string): void {
+    this.pageTitle = 'Product list: ' + value;
   }
 }
