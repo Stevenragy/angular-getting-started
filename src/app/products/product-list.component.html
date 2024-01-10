@@ -30,7 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (product of products; track product.productCode) {
+          @for (product of filteredProducts; track product.productCode) {
           <tr>
             <td>
               @if(showImage) {
@@ -42,7 +42,7 @@
               }
             </td>
             <td>{{ product.productName }}</td>
-            <td>{{ product.productCode }}</td>
+            <td>{{ product.productCode | convertToSpaces : "-" }}</td>
             <td>{{ product.releaseDate }}</td>
             <td>
               {{ product.price | currency : "USD" : "symbol" : "1.2-2" }}

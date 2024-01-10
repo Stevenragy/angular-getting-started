@@ -1,21 +1,36 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { IProduct } from './product';
+import { ConvertToSpacesPipe } from '../shared/convert-to-spaces.pipe';
 
 @Component({
   selector: 'pm-products',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ConvertToSpacesPipe],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
   pageTitle = 'Product List';
   imageWidth = 50;
   imageMargin = 2;
   showImage = false;
-  listFilter = 'cart';
-  products = [
+  private _listFilter = '';
+
+  get listFilter(): string {
+    return this._listFilter;
+  }
+
+  set listFilter(value: string) {
+    this._listFilter = value;
+    this.filteredProducts = this.performFilter(value);
+    console.log('In Setter: ' + value);
+  }
+
+  filteredProducts: IProduct[] = [];
+
+  products: IProduct[] = [
     {
       productId: 2,
       productName: 'Garden Cart',
@@ -38,7 +53,17 @@ export class ProductListComponent {
     },
   ];
 
+  performFilter(filterBy: string): IProduct[] {
+    filterBy = filterBy.toLowerCase();
+    return this.products.filter((p) =>
+      p.productName.toLocaleLowerCase().includes(filterBy)
+    );
+  }
   toggleImagee(): void {
     this.showImage = !this.showImage;
+  }
+
+  ngOnInit(): void {
+    this.listFilter = 'cart';
   }
 }
