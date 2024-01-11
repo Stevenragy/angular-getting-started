@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IProduct } from './product';
 import { ConvertToSpacesPipe } from '../shared/convert-to-spaces.pipe';
 import { StarComponent } from '../shared/star-component/star.component';
 import { ProductService } from './product.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'pm-products',
@@ -14,11 +15,14 @@ import { ProductService } from './product.service';
   styleUrl: './product-list.component.css',
   providers: [ProductService],
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnDestroy {
   pageTitle = 'Product list';
   imageWidth = 50;
   imageMargin = 2;
   showImage = false;
+  errorMessage = '';
+  subscription: Subscription | undefined;
+
   private _listFilter = '';
   private _productService;
 
@@ -49,10 +53,23 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.products = this._productService.getProducts();
-    this.filteredProducts = this.products;
+    this.subscription = this._productService.getProducts().subscribe({
+      next: (products) => {
+        console.log({ products });
+        this.products = products;
+        this.filteredProducts = this.products;
+      },
+      error: (err) => {
+        this.errorMessage = err;
+        console.log(this.errorMessage);
+      },
+    });
   }
   onRatingClicked(value: string): void {
     this.pageTitle = 'Product list: ' + value;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }
