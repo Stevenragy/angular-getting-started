@@ -21,7 +21,7 @@ export class StarComponent implements OnChanges {
   cropWidth = 90;
   faStar = faStar;
   @Output() ratingClicked: EventEmitter<string> = new EventEmitter<string>();
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.cropWidth = this.rating * (90 / 5);
   }
 

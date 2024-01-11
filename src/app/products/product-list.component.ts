@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IProduct } from './product';
 import { ConvertToSpacesPipe } from '../shared/convert-to-spaces.pipe';
 import { StarComponent } from '../shared/star-component/star.component';
+import { ProductService } from './product.service';
 
 @Component({
   selector: 'pm-products',
@@ -11,6 +12,7 @@ import { StarComponent } from '../shared/star-component/star.component';
   imports: [FormsModule, CommonModule, ConvertToSpacesPipe, StarComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
+  providers: [ProductService],
 })
 export class ProductListComponent implements OnInit {
   pageTitle = 'Product list';
@@ -18,6 +20,11 @@ export class ProductListComponent implements OnInit {
   imageMargin = 2;
   showImage = false;
   private _listFilter = '';
+  private _productService;
+
+  constructor(productService: ProductService) {
+    this._productService = productService;
+  }
 
   get listFilter(): string {
     return this._listFilter;
@@ -30,30 +37,7 @@ export class ProductListComponent implements OnInit {
   }
 
   filteredProducts: IProduct[] = [];
-
-  products: IProduct[] = [
-    {
-      productId: 2,
-      productName: 'Garden Cart',
-      productCode: 'GDN-0023',
-      releaseDate: 'March 18, 2021',
-      description: '15 gallon capacity rolling garden cart',
-      price: 32.99,
-      starRating: 4.2,
-      imageUrl: 'assets/images/garden_cart.png',
-    },
-    {
-      productId: 5,
-      productName: 'Hammer',
-      productCode: 'TBX-0048',
-      releaseDate: 'May 21, 2021',
-      description: 'Curved claw steel hammer',
-      price: 8.9,
-      starRating: 4.8,
-      imageUrl: 'assets/images/hammer.png',
-    },
-  ];
-
+  products: IProduct[] = [];
   performFilter(filterBy: string): IProduct[] {
     filterBy = filterBy.toLowerCase();
     return this.products.filter((p) =>
@@ -65,7 +49,8 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listFilter = 'cart';
+    this.products = this._productService.getProducts();
+    this.filteredProducts = this.products;
   }
   onRatingClicked(value: string): void {
     this.pageTitle = 'Product list: ' + value;
