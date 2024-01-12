@@ -1,0 +1,14 @@
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+
+export const productDetailGuard: CanActivateFn = (route, state) => {
+  const router: Router = inject(Router);
+  const id = Number(route.paramMap.get('id'));
+  if (isNaN(id) || id < 1) {
+    alert('Not valid product id');
+    router.navigate(['/products']);
+    return false;
+  }
+
+  return true;
+};
