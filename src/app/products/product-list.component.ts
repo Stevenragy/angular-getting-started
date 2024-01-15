@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IProduct } from './product';
 import { ConvertToSpacesPipe } from '../shared/convert-to-spaces.pipe';
@@ -31,11 +31,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
   subscription: Subscription | undefined;
 
   private _listFilter = '';
-  private _productService;
+  private _productService = inject(ProductService);
 
-  constructor(productService: ProductService) {
-    this._productService = productService;
-  }
+  // constructor(productService: ProductService) {
+  //   this._productService = productService;
+  // }
 
   get listFilter(): string {
     return this._listFilter;

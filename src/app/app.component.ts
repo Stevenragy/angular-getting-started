@@ -4,6 +4,15 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { ProductListComponent } from './products/product-list.component';
 import { HttpClientModule } from '@angular/common/http';
 
+// handling mouse event using rxjs
+// const mouseMove$ = fromEvent<MouseEvent>(document, 'mousemove');
+
+// const lastMouseMovement = mouseMove$.pipe(throttleTime(1000));
+
+// lastMouseMovement.subscribe((event) => {
+//   console.log(`Mouse Position: X: ${event.clientX}, Y: ${event.clientY}`);
+// });
+
 @Component({
   selector: 'pm-root',
   standalone: true,
